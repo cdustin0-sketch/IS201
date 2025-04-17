@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riddle Generator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/The_Thinker%2C_Rodin.jpg/800px-The_Thinker%2C_Rodin.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: yellow;
+      animation: fall 1s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0); }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Riddle Generator</h1>
+    <p id="riddle">Click "New Riddle" to get started!</p>
+    <input type="text" id="answerInput" placeholder="Type your answer here" />
+    <button onclick="checkAnswer()">Submit Answer</button>
+    <button onclick="newRiddle()">New Riddle</button>
+    <p id="feedback"></p>
+  </div>
+
+  <script>
+    const riddles = [
+      {
+        question: "What has to be broken before you can use it?",
+        answer: "egg"
+      },
+      {
+        question: "I’m tall when I’m young, and I’m short when I’m old. What am I?",
+        answer: "candle"
+      },
+      {
+        question: "What can you catch, but not throw?",
+        answer: "cold"
+      }
+    ];
+
+    let currentRiddle = {};
+
+    function newRiddle() {
+      const randomIndex = Math.floor(Math.random() * riddles.length);
+      currentRiddle = riddles[randomIndex];
+      document.getElementById("riddle").textContent = currentRiddle.question;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("answerInput").value = "";
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+      if (userAnswer === currentRiddle.answer) {
+        document.getElementById("feedback").textContent = "Correct! 🎉";
+        triggerConfetti();
+      } else {
+        document.getElementById("feedback").textContent = "Try again!";
+      }
+    }
+
+    function triggerConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = Math.random() * -20 + "px";
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 1000);
+      }
+    }
+  </script>
+</body>
+</html>
